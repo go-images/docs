@@ -1,0 +1,827 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A pure-Go (CGO=0) scikit-image-style image-processing library — filters, edges, morphology, geometry, colour; SIMD-accelerated.">
+      
+      
+      
+        <link rel="canonical" href="https://go-images.github.io/docs/0.1/roadmap/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../performance/">
+      
+      
+      <link rel="icon" href="../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>Roadmap - go-images docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#implementation-plan-pure-go-image-processing-go-imagesimages" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="go-images docs" class="md-header__button md-logo" aria-label="go-images docs" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            go-images docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Roadmap
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="orange" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="orange" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/go-images/images" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    go-images/images
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="go-images docs" class="md-nav__button md-logo" aria-label="go-images docs" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    go-images docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/go-images/images" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    go-images/images
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Roadmap
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-pure-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why pure Go?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Why pure Go?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#honest-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-core-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 0 — core (DONE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-more-filters-transforms-in-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — more filters &amp; transforms (in progress)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-morphology-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — morphology &amp; analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-simd-kernels-via-go-asmgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — SIMD kernels via go-asmgen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-ruby-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Ruby binding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-quality-bar-org-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Quality bar (org rules)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Performance
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-why-pure-go" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Why pure Go?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Why pure Go?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#honest-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Honest comparison
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phase-0-core-done" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 0 — core (DONE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-1-more-filters-transforms-in-progress" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 1 — more filters &amp; transforms (in progress)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-2-morphology-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 2 — morphology &amp; analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-3-simd-kernels-via-go-asmgen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 3 — SIMD kernels via go-asmgen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#phase-4-ruby-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phase 4 — Ruby binding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-quality-bar-org-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Quality bar (org rules)
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="implementation-plan-pure-go-image-processing-go-imagesimages">Implementation plan — pure-Go image processing (<code>go-images/images</code>)<a class="headerlink" href="#implementation-plan-pure-go-image-processing-go-imagesimages" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Goal: a <strong>pure-Go (no cgo)</strong> image-processing library in the style of
+scikit-image, built on the Go standard library. It is <strong>embeddable</strong> (no
+native dependency) and <strong>cross-compilable</strong> to every Go target, and is the
+image backend intended for
+<a href="https://github.com/go-embedded-ruby/ruby">go-embedded-ruby</a>.</p>
+</blockquote>
+<h2 id="1-why-pure-go">1. Why pure Go?<a class="headerlink" href="#1-why-pure-go" title="Permanent link">&para;</a></h2>
+<p>The mainstream image stacks all require a native C library:</p>
+<ul>
+<li><strong>ruby-vips</strong> → libvips, <strong>RMagick</strong> → ImageMagick.</li>
+<li>The cgo-backed Go wrappers (<code>govips</code>, <code>go-imagick</code>) link the same shared
+  objects.</li>
+</ul>
+<p>That makes static builds, cross-compilation and embedding painful. This library
+is <strong>CGO=0</strong>, so a single <code>go build</code> produces a self-contained binary for any of
+the supported targets with no system packages.</p>
+<h3 id="honest-comparison">Honest comparison<a class="headerlink" href="#honest-comparison" title="Permanent link">&para;</a></h3>
+<p>Pure-Go image libraries already exist, and we are not pretending otherwise:</p>
+<ul>
+<li><strong><a href="https://github.com/anthonynsimon/bild">bild</a></strong> — a broad pure-Go toolkit
+  (blur, edge detection, morphology, histograms). Mature and feature-rich.</li>
+<li><strong><a href="https://github.com/disintegration/imaging">disintegration/imaging</a></strong> — a
+  focused, well-loved resize/transform/adjust library.</li>
+<li><strong>libvips / ImageMagick</strong> — far more features and <strong>hand-tuned SIMD</strong>; far
+  faster on large images today, but cgo-bound.</li>
+</ul>
+<p>Where this project aims to differentiate:</p>
+<ol>
+<li><strong>Clean, correct, 100%-covered core</strong> with pure functions and a small,
+   stable surface.</li>
+<li><strong>Kernels isolated</strong> in <code>internal/kernels</code> behind narrow signatures so they
+   can be replaced wholesale by <strong>SIMD generated with
+   <a href="https://github.com/go-asmgen">go-asmgen</a></strong> — the only Go SIMD generator
+   covering all six 64-bit targets (amd64, arm64, riscv64, loong64, ppc64le
+   VSX, s390x vector) — without touching the public API. This is the path to
+   closing the speed gap with libvips/ImageMagick while staying cgo-free.</li>
+<li><strong>Embeddability</strong> as the image backend for go-embedded-ruby.</li>
+</ol>
+<p>We do <strong>not</strong> claim to be faster than libvips/ImageMagick today, nor more
+featureful than bild. The bet is: cgo-free + embeddable + a SIMD story across
+six arches.</p>
+<h2 id="2-architecture">2. Architecture<a class="headerlink" href="#2-architecture" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>image.Image
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>   │  ToRGBA  → *image.RGBA (origin-anchored, tightly packed R,G,B,A)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   ▼
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>public ops (ops.go, io.go)        ← pure funcs, return a new *image.RGBA
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   │  delegate hot loops to
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   ▼
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>internal/kernels                  ← scalar pure-Go pixel loops (today)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>   │  same signatures
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>   ▼
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>internal/kernels (SIMD, later)    ← go-asmgen kernels per target (Phase 2)
+</code></pre></div>
+<p>The RGBA layout (row-major, 4 bytes/pixel) is deliberate: it is exactly the
+shape that maps onto vector registers.</p>
+<h2 id="3-roadmap">3. Roadmap<a class="headerlink" href="#3-roadmap" title="Permanent link">&para;</a></h2>
+<h3 id="phase-0-core-done">Phase 0 — core (DONE)<a class="headerlink" href="#phase-0-core-done" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ToRGBA</code> conversion helper.</li>
+<li>I/O: <code>Load</code>, <code>Save</code> (PNG/JPEG by extension), <code>Decode</code>, <code>Encode</code>.</li>
+<li>Point ops: <code>Grayscale</code> (Rec. 601 luma), <code>Invert</code>, <code>AdjustBrightness</code>,
+  <code>AdjustContrast</code> (both clamped to <code>[0,255]</code>).</li>
+<li><code>Resize</code> with nearest-neighbour and bilinear modes.</li>
+<li><code>Convolve</code> with arbitrary odd-sized float kernels and clamp-to-edge borders.</li>
+<li><code>GaussianBlur</code> as a separable convolution.</li>
+<li>100% statement coverage; CI on three OSes + six 64-bit arches (native
+  amd64/arm64, qemu riscv64/loong64/ppc64le/s390x).</li>
+</ul>
+<h3 id="phase-1-more-filters-transforms-in-progress">Phase 1 — more filters &amp; transforms (in progress)<a class="headerlink" href="#phase-1-more-filters-transforms-in-progress" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Sobel edge detection (DONE)</strong> — <code>Sobel</code> (gradient magnitude),
+  <code>SobelX</code>/<code>SobelY</code> (directional responses), all on Rec. 601 luminance with
+  clamp-to-edge borders. The luminance plane is computed once and the
+  gradient/magnitude pass is fused with unrolled kernel taps; a benchmark
+  compares it to an unfused two-pass baseline and a differential test pins it to
+  an independent naive reference.</li>
+<li><strong>Box blur (DONE)</strong> — <code>BoxBlur</code>, separable running-sum (O(1) per pixel in the
+  radius), float intermediate so the two passes compose to the exact 2-D mean;
+  matches <code>scipy.ndimage.uniform_filter</code> (mode=nearest) bit-for-bit. Validated
+  against an independent naive oracle and against SciPy on the VM.</li>
+<li><strong>Geometric transforms (DONE)</strong> — <code>FlipHorizontal</code>/<code>FlipVertical</code>
+  (numpy.fliplr/flipud), <code>Rotate90</code>/<code>Rotate180</code>/<code>Rotate270</code> (numpy.rot90) and
+  <code>Crop</code>. Exact pixel rearrangements, no interpolation.</li>
+<li><strong>Colour &amp; threshold (DONE)</strong> — <code>RGBToHSV</code>/<code>HSVToRGB</code> (byte-encoded,
+  round-trip stable), <code>OtsuThreshold</code> (matches <code>skimage.filters.threshold_otsu</code>)
+  and <code>Threshold</code>/<code>Otsu</code>.</li>
+<li><strong>Edge operators (DONE)</strong> — <code>Prewitt</code>, <code>Scharr</code> and <code>SobelMag</code> (normalised
+  separable gradient magnitude, <code>sqrt((gx²+gy²)/2)</code> on luminance in [0,1]) and
+  <code>Laplacian</code> (discrete <code>[0,-1,0;-1,4,-1;0,-1,0]</code>). Match
+  <code>skimage.filters.{prewitt,scharr,sobel,laplace}</code> bit-for-bit on the VM (a
+  3-tap kernel makes clamp-to-edge equal skimage's reflect border).</li>
+<li><strong>Canny (DONE)</strong> — <code>Canny(sigma, low, high)</code>: Gaussian-smoothed luminance →
+  Sobel gradients → bilinear non-maximum suppression → 8-connected hysteresis,
+  mirroring <code>skimage.feature.canny</code>. ~98% interior agreement vs skimage
+  (mode=nearest); the residual is skimage's masked constant-border preprocessing
+  vs the library's cleaner clamp-to-edge.</li>
+<li><strong>Median + unsharp (DONE)</strong> — <code>Median</code> (square median via 256-bin counting
+  selection, matches <code>scipy.ndimage.median_filter</code> <code>mode="nearest"</code> bit-for-bit)
+  and <code>UnsharpMask</code>/<code>Sharpen</code> (<code>src + amount*(src − blur)</code>, matches
+  <code>skimage.filters.unsharp_mask</code>'s formula exactly within rounding).</li>
+<li>Bilateral filter; emboss.</li>
+<li>Arbitrary-angle rotate, affine/warp; bicubic resize.</li>
+<li>Colour adjustments: gamma, channel mixing, RGB↔Lab, histogram equalisation.</li>
+<li>Configurable edge handling (clamp / wrap / reflect / constant).</li>
+</ul>
+<h3 id="phase-2-morphology-analysis">Phase 2 — morphology &amp; analysis<a class="headerlink" href="#phase-2-morphology-analysis" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Grayscale morphology (DONE)</strong> — <code>Erode</code>/<code>Dilate</code> (separable per-channel
+  local min/max over a square element, matching <code>scipy.ndimage.grey_erosion</code>/
+  <code>grey_dilation</code> bit-for-bit) and the derived <code>Open</code>/<code>Close</code>. Binary on 0/255.</li>
+<li>Connected components, labelling, region properties.</li>
+<li>Histograms (<code>kernels.Histogram</code> exists) and histogram equalisation.</li>
+</ul>
+<h3 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h3>
+<p><code>docs/perf.md</code> tracks honest go-images-vs-scikit-image/SciPy benchmarks on the
+arm64 Linux VM. The scalar pure-Go kernels already beat SciPy on the separable
+hot ops (box blur 3.1×, Sobel 3.2×); Gaussian and morphology are ~1.1× behind
+NumPy's compiled C and are the first targets for the Phase 3 SIMD work.</p>
+<h3 id="phase-3-simd-kernels-via-go-asmgen">Phase 3 — SIMD kernels via go-asmgen<a class="headerlink" href="#phase-3-simd-kernels-via-go-asmgen" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Replace <code>internal/kernels</code> scalar loops with SIMD across all six 64-bit Go
+  targets, keeping the scalar versions as the fallback and the correctness
+  oracle (differential tests: SIMD output must equal scalar output).</li>
+<li>Benchmark suite to measure the speed-up and track against libvips/ImageMagick.</li>
+</ul>
+<h3 id="phase-4-ruby-binding">Phase 4 — Ruby binding<a class="headerlink" href="#phase-4-ruby-binding" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Expose the library through
+  <a href="https://github.com/go-embedded-ruby/ruby">go-embedded-ruby</a> as a cgo-free
+  alternative to ruby-vips/RMagick.</li>
+</ul>
+<h2 id="4-quality-bar-org-rules">4. Quality bar (org rules)<a class="headerlink" href="#4-quality-bar-org-rules" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Pure Go, <strong>CGO=0</strong>, no vendoring — build from source on every target.</li>
+<li><strong>100% statement coverage</strong>, enforced in CI; the test runner exit code must
+  be 0 (not just the coverage number).</li>
+<li>English-only repository content.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "navigation.top", "navigation.instant", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+    
+  </body>
+</html>
