@@ -119,15 +119,22 @@ shape that maps onto vector registers.
 - **Grayscale morphology (DONE)** — `Erode`/`Dilate` (separable per-channel
   local min/max over a square element, matching `scipy.ndimage.grey_erosion`/
   `grey_dilation` bit-for-bit) and the derived `Open`/`Close`. Binary on 0/255.
+  Runs the **O(1) van Herk / Gil-Werman** running min/max (three comparisons per
+  pixel, flat in radius), reaching scikit-image parity → 1.02× at 4096²
+  single-thread and 4.8–7.8× on all cores.
 - Connected components, labelling, region properties.
 - Histograms (`kernels.Histogram` exists) and histogram equalisation.
 
 ### Performance
 
-`docs/perf.md` tracks honest go-images-vs-scikit-image/SciPy benchmarks on the
-arm64 Linux VM. The scalar pure-Go kernels already beat SciPy on the separable
-hot ops (box blur 3.1×, Sobel 3.2×); Gaussian and morphology are ~1.1× behind
-NumPy's compiled C and are the first targets for the Phase 3 SIMD work.
+The [Performance](performance.md) page tracks honest
+go-images-vs-scikit-image / SciPy / OpenCV benchmarks. go-images beats
+scikit-image on the separable hot ops (box blur 1.8–2.6×, RGB→HSV ~4.8×, flip
+~2×, Gaussian now 1.0–1.3×). **Morphology now reaches scikit-image parity**
+(erode/dilate parity → 1.02× at 4096² single-thread, 4.8–7.8× on all cores)
+after the O(1) van Herk / Gil-Werman rewrite. The remaining single-thread gap is
+Sobel (~0.78×); closing the residual constant factor (and matching OpenCV's
+O(1)+SIMD morphology) is the SIMD work tracked in BENCHMARKS.md.
 
 ### Phase 3 — SIMD kernels via go-asmgen
 
