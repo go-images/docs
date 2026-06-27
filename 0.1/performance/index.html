@@ -791,6 +791,18 @@ filter, no per-channel Python overhead at this size).</p>
   the per-row scratch was hoisted out of the inner loop (allocations dropped
   from ~6,200/op to 71/op).</li>
 </ul>
+<blockquote>
+<p><strong>Update — O(1) van Herk / Gil-Werman morphology.</strong> The morphology inner loop
+has since been rewritten from the O(radius) fold to the <strong>O(1) van Herk /
+Gil-Werman</strong> running min/max — three comparisons per pixel, flat in radius. On
+the single-thread scikit-image parity benchmark (Apple M4 Max), erode/dilate
+now reach <strong>parity → 1.02×</strong> of scikit-image at 4096² (up from 0.58–0.77×) and
+<strong>4.8–7.8×</strong> on all cores; output stays byte-identical to
+<code>scipy.ndimage.grey_erosion</code>/<code>grey_dilation</code>. The remaining residual at small
+radius is a pure constant factor (SIMD). See the full single-thread and
+multi-thread parity tables and methodology in
+<a href="https://github.com/go-images/images/blob/main/BENCHMARKS.md">BENCHMARKS.md</a>.</p>
+</blockquote>
 <h2 id="correctness-vs-scipy-not-just-speed">Correctness vs SciPy (not just speed)<a class="headerlink" href="#correctness-vs-scipy-not-just-speed" title="Permanent link">&para;</a></h2>
 <p>Same VM, a <code>64×48</code> deterministic image, go-images output compared
 pixel-for-pixel to the matched SciPy reference, <strong>after</strong> the SIMD/multicore
