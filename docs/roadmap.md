@@ -132,9 +132,12 @@ go-images-vs-scikit-image / SciPy / OpenCV benchmarks. go-images beats
 scikit-image on the separable hot ops (box blur 1.8–2.6×, RGB→HSV ~4.8×, flip
 ~2×, Gaussian now 1.0–1.3×). **Morphology now reaches scikit-image parity**
 (erode/dilate parity → 1.02× at 4096² single-thread, 4.8–7.8× on all cores)
-after the O(1) van Herk / Gil-Werman rewrite. The remaining single-thread gap is
-Sobel (~0.78×); closing the residual constant factor (and matching OpenCV's
-O(1)+SIMD morphology) is the SIMD work tracked in BENCHMARKS.md.
+after the O(1) van Herk / Gil-Werman rewrite, and **Sobel now reaches parity
+too** (1.02–1.06× single-thread, 4.2–4.8× on all cores) after the branch-free
+interior-run rewrite. The remaining single-thread gap is a pure constant
+factor (small-radius morphology, and the non-per-pixel Rotate90/Crop/Otsu
+reference ops); closing it (and matching OpenCV's O(1)+SIMD morphology) is the
+SIMD work tracked in BENCHMARKS.md.
 
 ### Phase 3 — SIMD kernels via go-asmgen
 

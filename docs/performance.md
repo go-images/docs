@@ -129,6 +129,16 @@ filter, no per-channel Python overhead at this size).
 > multi-thread parity tables and methodology in
 > [BENCHMARKS.md](https://github.com/go-images/images/blob/main/BENCHMARKS.md).
 
+> **Update — branch-free Sobel.** The recompute-per-pixel Sobel gradient (the
+> one loss called out above) has since been closed: each row now splits into
+> clamp-addressed border columns and a **branch-free interior run** with the
+> row bases hoisted out of the loop, so the interior pays zero `clampIndex`
+> calls. Output stays byte-identical to the naive form. On the single-thread
+> scikit-image parity benchmark (Apple M4 Max), Sobel now reaches **1.02–1.06×**
+> of scikit-image (up from 0.78–0.80×) and **4.2–4.8×** on all cores. See
+> [BENCHMARKS.md](https://github.com/go-images/images/blob/main/BENCHMARKS.md)
+> action item B.
+
 ## Correctness vs SciPy (not just speed)
 
 Same VM, a `64×48` deterministic image, go-images output compared
