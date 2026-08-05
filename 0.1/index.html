@@ -465,9 +465,18 @@ single portable module that cross-compiles to a static binary, accelerated by
 on box blur and Sobel. <strong>100% coverage</strong>, validated against scikit-image.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nx">img</span><span class="w"> </span><span class="s">&quot;github.com/go-images/images&quot;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nx">src</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">Load</span><span class="p">(</span><span class="s">&quot;photo.png&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nx">edges</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">SobelMag</span><span class="p">(</span><span class="nx">img</span><span class="p">.</span><span class="nx">GaussianBlur</span><span class="p">(</span><span class="nx">src</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">))</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">img</span><span class="p">.</span><span class="nx">Save</span><span class="p">(</span><span class="s">&quot;edges.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">edges</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nx">src</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">Load</span><span class="p">(</span><span class="s">&quot;photo.png&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nx">blurred</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">GaussianBlur</span><span class="p">(</span><span class="nx">src</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nx">edges</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">SobelMag</span><span class="p">(</span><span class="nx">blurred</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">img</span><span class="p">.</span><span class="nx">Save</span><span class="p">(</span><span class="s">&quot;edges.png&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">edges</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="api-surface">API surface<a class="headerlink" href="#api-surface" title="Permanent link">&para;</a></h2>
 <table>
@@ -507,8 +516,10 @@ on box blur and Sobel. <strong>100% coverage</strong>, validated against scikit-
 <h2 id="performance-architectures">Performance &amp; architectures<a class="headerlink" href="#performance-architectures" title="Permanent link">&para;</a></h2>
 <p>The separable hot operations are go-asmgen SIMD-accelerated on amd64 (SSE2),
 arm64 (NEON) and s390x (vector); all six 64-bit targets run a portable scalar
-core. go-images <strong>beats scikit-image</strong> ~3–12× on box blur and Sobel; the
-benchmark page is honest about where it does not.</p>
+core. go-images <strong>beats scikit-image</strong> on box blur (1.8–2.6× single-thread, up
+to 10.3× on all cores) and now matches or beats it on Sobel (1.02–1.06×
+single-thread, up to 4.8× on all cores); the benchmark page is honest about
+where it does not.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="roadmap/">Roadmap</a> — the plan and what ships today.</li>

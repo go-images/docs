@@ -802,6 +802,15 @@ now reach <strong>parity → 1.02×</strong> of scikit-image at 4096² (up from 
 radius is a pure constant factor (SIMD). See the full single-thread and
 multi-thread parity tables and methodology in
 <a href="https://github.com/go-images/images/blob/main/BENCHMARKS.md">BENCHMARKS.md</a>.</p>
+<p><strong>Update — branch-free Sobel.</strong> The recompute-per-pixel Sobel gradient (the
+one loss called out above) has since been closed: each row now splits into
+clamp-addressed border columns and a <strong>branch-free interior run</strong> with the
+row bases hoisted out of the loop, so the interior pays zero <code>clampIndex</code>
+calls. Output stays byte-identical to the naive form. On the single-thread
+scikit-image parity benchmark (Apple M4 Max), Sobel now reaches <strong>1.02–1.06×</strong>
+of scikit-image (up from 0.78–0.80×) and <strong>4.2–4.8×</strong> on all cores. See
+<a href="https://github.com/go-images/images/blob/main/BENCHMARKS.md">BENCHMARKS.md</a>
+action item B.</p>
 </blockquote>
 <h2 id="correctness-vs-scipy-not-just-speed">Correctness vs SciPy (not just speed)<a class="headerlink" href="#correctness-vs-scipy-not-just-speed" title="Permanent link">&para;</a></h2>
 <p>Same VM, a <code>64×48</code> deterministic image, go-images output compared
