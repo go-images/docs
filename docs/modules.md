@@ -30,12 +30,17 @@ modules required it through them.
   away is accepted as the reference accepts it.
 - The SIMD dependency is [go-simd/highway](https://go-simd.github.io/docs/latest/repos/highway/),
   because consumers cannot `go mod tidy` against upstream go-highway's releases.
-- ⛔ The lossless colour transform is **not** a SIMD call. On amd64, without
-  `GOEXPERIMENT=simd`, highway takes a generic fallback that allocates in every
-  vector operation. On one 4K frame that took 408.8 ms and 12.45 million
-  allocations, against 17.9 ms and 6 for a plain loop. On arm64 the loop also
-  beat the NEON path, 14.1 ms against 29.9 ms, because copying the planes in
-  and out cost more than the kernel saved.
+- ⛔ The lossless colour transform and the inverse 5/3 wavelet are **not**
+  SIMD calls. On amd64, without `GOEXPERIMENT=simd`, highway takes a generic
+  fallback that allocates in every vector operation.
+  - The colour transform on one 4K frame took 408.8 ms and 12.45 million
+    allocations, against 17.9 ms and 6 for a plain loop. On arm64 the loop also
+    beat the NEON path, 14.1 ms against 29.9 ms, because copying the planes in
+    and out cost more than the kernel saved.
+  - With the wavelet's vertical pass done a whole row at a time and in place,
+    a lossless 1920×1080 decode on amd64 went from 638 ms and 14.55 million
+    allocations to 269 ms and 93 thousand, the same count as arm64, where the
+    decode is not slower (−1.5 %).
 
 ## ⛔ Why three forks of Go's own codecs
 
