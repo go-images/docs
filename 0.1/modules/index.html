@@ -361,6 +361,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#jpeg2000-a-fork-kept-for-its-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        jpeg2000: a fork kept for its fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-three-forks-of-gos-own-codecs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -471,6 +482,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#jpeg2000-a-fork-kept-for-its-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        jpeg2000: a fork kept for its fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-three-forks-of-gos-own-codecs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -510,7 +532,7 @@
 
 
 <h1 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h1>
-<p>The <strong>6 modules</strong> of <code>go-images</code>. Each links to its source and to its generated
+<p>The <strong>7 modules</strong> of <code>go-images</code>. Each links to its source and to its generated
 API reference.</p>
 <table>
 <thead>
@@ -551,8 +573,36 @@ API reference.</p>
 <td>a fork of Go's <code>image/gif</code>, with the same <code>DecodePartial</code> as <code>png</code></td>
 <td><a href="https://pkg.go.dev/github.com/go-images/gif">pkg.go.dev</a></td>
 </tr>
+<tr>
+<td><a href="https://github.com/go-images/jpeg2000"><code>jpeg2000</code></a></td>
+<td>a pure-Go JPEG 2000 codec, forked from ajroetker/go-jpeg2000: CMYK read as ink, tiled encodes fixed</td>
+<td><a href="https://pkg.go.dev/github.com/go-images/jpeg2000">pkg.go.dev</a></td>
+</tr>
 </tbody>
 </table>
+<h2 id="jpeg2000-a-fork-kept-for-its-fixes">jpeg2000: a fork kept for its fixes<a class="headerlink" href="#jpeg2000-a-fork-kept-for-its-fixes" title="Permanent link">&para;</a></h2>
+<p><code>jpeg2000</code> decodes and encodes JPEG 2000 codestreams (<code>.j2k</code>) and JP2 files
+(<code>.jp2</code>) with no C. It is a fork of
+<a href="https://github.com/ajroetker/go-jpeg2000">ajroetker/go-jpeg2000</a>, and every
+change is listed in its <code>NOTICE</code>, as Apache-2.0 requires. go-pdfkit/render
+and go-gfx/gfx require it directly, and on 2026-10-18 another 45 fleet
+modules required it through them.</p>
+<ul>
+<li>A four-component file whose JP2 header declares <strong>CMYK</strong> decodes to an
+  <code>*image.CMYK</code>. Read as red, green and blue it lost the black plate: 255
+  levels from poppler on every pixel, now at most 2 over 2 440 044 samples.</li>
+<li>Tiled encodes place their code blocks and tiles where the decoder and
+  OpenJPEG read them (ITU-T T.800 B.7), and a tile whose blocks all quantise
+  away is accepted as the reference accepts it.</li>
+<li>The SIMD dependency is <a href="https://go-simd.github.io/docs/latest/repos/highway/">go-simd/highway</a>,
+  because consumers cannot <code>go mod tidy</code> against upstream go-highway's releases.</li>
+<li>⛔ The lossless colour transform is <strong>not</strong> a SIMD call. On amd64, without
+  <code>GOEXPERIMENT=simd</code>, highway takes a generic fallback that allocates in every
+  vector operation. On one 4K frame that took 408.8 ms and 12.45 million
+  allocations, against 17.9 ms and 6 for a plain loop. On arm64 the loop also
+  beat the NEON path, 14.1 ms against 29.9 ms, because copying the planes in
+  and out cost more than the kernel saved.</li>
+</ul>
 <h2 id="why-three-forks-of-gos-own-codecs">⛔ Why three forks of Go's own codecs<a class="headerlink" href="#why-three-forks-of-gos-own-codecs" title="Permanent link">&para;</a></h2>
 <p>Not to change what they decode. Each carries its difference in a <code>NOTICE</code>, and
 Go's own test suite passes unaltered in substance.</p>
