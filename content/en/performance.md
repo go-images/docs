@@ -1,11 +1,16 @@
-# Performance — `go-images/images` vs scikit-image / SciPy
+---
+title: "Performance"
+weight: 40
+---
+
+# Performance — `go-images/images` vs scikit-image / SciPy {#performance-go-imagesimages-vs-scikit-image-scipy}
 
 > **The bar:** honest, like-for-like timings on the *same machine*, at a
 > realistic image size, for operations with matched semantics. We show the wins
 > **and** the losses — "on n'a pas le droit de se tromper", a fake win is worse
 > than a real loss.
 
-## Method
+## Method {#method}
 
 - **Hardware:** a single Tart `debian` VM, `aarch64` (arm64) Linux, kernel
   6.12, 4 vCPUs. Both stacks run on the *same* VM, back to back.
@@ -53,7 +58,7 @@ Every SIMD kernel is validated bit-for-bit against its scalar oracle (axpy to a
 tight tolerance, since a GOAMD64=v3 build's oracle fuses to VFMADD), and the
 whole op is validated against SciPy.
 
-## Results — 512×512 (arm64 Linux, lower is better)
+## Results — 512×512 (arm64 Linux, lower is better) {#results-512512-arm64-linux-lower-is-better}
 
 | Operation               | go-images **before** | go-images **after** | scikit-image / SciPy | After vs SciPy |
 |-------------------------|---------------------:|--------------------:|---------------------:|---------------:|
@@ -63,7 +68,7 @@ whole op is validated against SciPy.
 | **Erode** (r=2)         |           13,865,054 |           1,581,921 |           10,559,638 | **6.7× faster** |
 | **Dilate** (r=2)        |           12,898,691 |           1,482,165 |           11,025,974 | **7.4× faster** |
 
-### Phase 1 edge / filter additions — 512×512 (arm64 Linux, lower is better)
+### Phase 1 edge / filter additions — 512×512 (arm64 Linux, lower is better) {#phase-1-edge-filter-additions-512512-arm64-linux-lower-is-better}
 
 These are the newer multicore (scalar-inner-loop) ops, benchmarked on the same
 VM against the matched scikit-image / SciPy reference. They have no SIMD inner
@@ -91,7 +96,7 @@ slower) to **3.8× faster**, and Erode/Dilate from ~0.9× to **6.7×/7.4×
 faster**. The already-winning Box blur and Sobel widen their lead (the multicore
 tiling alone roughly triples them on 4 cores).
 
-## Results — 1024×1024 (arm64 Linux, lower is better)
+## Results — 1024×1024 (arm64 Linux, lower is better) {#results-10241024-arm64-linux-lower-is-better}
 
 | Operation               | go-images (ns/op) | scikit-image / SciPy (ns/op) | Speed-up |
 |-------------------------|------------------:|-----------------------------:|---------:|
@@ -106,7 +111,7 @@ for (morphology, Gaussian); Sobel narrows to 1.9× because its arithmetic per
 pixel is small and the win is mostly the multicore fan-out (single SciPy edge
 filter, no per-channel Python overhead at this size).
 
-### Per-component speed-up (512², before → after)
+### Per-component speed-up (512², before → after) {#per-component-speed-up-512-before-after}
 
 - **Gaussian — 3.0× faster than the scalar floor** (and now ahead of SciPy):
   the axpy SIMD kernel vectorises the dense multiply-add and the two passes fan
@@ -139,7 +144,7 @@ filter, no per-channel Python overhead at this size).
 > [BENCHMARKS.md](https://github.com/go-images/images/blob/main/BENCHMARKS.md)
 > action item B.
 
-## Correctness vs SciPy (not just speed)
+## Correctness vs SciPy (not just speed) {#correctness-vs-scipy-not-just-speed}
 
 Same VM, a `64×48` deterministic image, go-images output compared
 pixel-for-pixel to the matched SciPy reference, **after** the SIMD/multicore
@@ -160,7 +165,7 @@ oracle (`internal/kernels/simd_test.go`) across every length residue, and the
 whole separable op against an independent naive reference at both the serial and
 parallel thresholds (`separable_test.go`).
 
-### Residual notes (honest)
+### Residual notes (honest) {#residual-notes-honest}
 
 - **Memory:** the plane-based Gaussian allocates more transient float64 scratch
   than the old in-place byte path (≈14.8 MB/op at 512² vs 2.1 MB), the cost of
@@ -170,7 +175,7 @@ parallel thresholds (`separable_test.go`).
   vector-double in the Go assembler / faulting qemu V), relying on multicore
   tiling alone for the speed-up. They are validated on the per-arch qemu CI job.
 
-## Reproducing
+## Reproducing {#reproducing}
 
 ```sh
 # On the arm64 debian VM, with the repo synced to /tmp/goimages:

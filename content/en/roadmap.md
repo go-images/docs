@@ -1,4 +1,9 @@
-# Implementation plan — pure-Go image processing (`go-images/images`)
+---
+title: "Roadmap"
+weight: 30
+---
+
+# Implementation plan — pure-Go image processing (`go-images/images`) {#implementation-plan-pure-go-image-processing-go-imagesimages}
 
 > Goal: a **pure-Go (no cgo)** image-processing library in the style of
 > scikit-image, built on the Go standard library. It is **embeddable** (no
@@ -6,7 +11,7 @@
 > image backend intended for
 > [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby).
 
-## 1. Why pure Go?
+## 1. Why pure Go? {#1-why-pure-go}
 
 The mainstream image stacks all require a native C library:
 
@@ -18,7 +23,7 @@ That makes static builds, cross-compilation and embedding painful. This library
 is **CGO=0**, so a single `go build` produces a self-contained binary for any of
 the supported targets with no system packages.
 
-### Honest comparison
+### Honest comparison {#honest-comparison}
 
 Pure-Go image libraries already exist, and we are not pretending otherwise:
 
@@ -45,7 +50,7 @@ We do **not** claim to be faster than libvips/ImageMagick today, nor more
 featureful than bild. The bet is: cgo-free + embeddable + a SIMD story across
 six arches.
 
-## 2. Architecture
+## 2. Architecture {#2-architecture}
 
 ```
 image.Image
@@ -63,9 +68,9 @@ internal/kernels (SIMD, later)    ← go-asmgen kernels per target (Phase 2)
 The RGBA layout (row-major, 4 bytes/pixel) is deliberate: it is exactly the
 shape that maps onto vector registers.
 
-## 3. Roadmap
+## 3. Roadmap {#3-roadmap}
 
-### Phase 0 — core (DONE)
+### Phase 0 — core (DONE) {#phase-0-core-done}
 
 - `ToRGBA` conversion helper.
 - I/O: `Load`, `Save` (PNG/JPEG by extension), `Decode`, `Encode`.
@@ -77,7 +82,7 @@ shape that maps onto vector registers.
 - 100% statement coverage; CI on three OSes + six 64-bit arches (native
   amd64/arm64, qemu riscv64/loong64/ppc64le/s390x).
 
-### Phase 1 — more filters & transforms (in progress)
+### Phase 1 — more filters & transforms (in progress) {#phase-1-more-filters-transforms-in-progress}
 
 - **Sobel edge detection (DONE)** — `Sobel` (gradient magnitude),
   `SobelX`/`SobelY` (directional responses), all on Rec. 601 luminance with
@@ -114,7 +119,7 @@ shape that maps onto vector registers.
 - Colour adjustments: gamma, channel mixing, RGB↔Lab, histogram equalisation.
 - Configurable edge handling (clamp / wrap / reflect / constant).
 
-### Phase 2 — morphology & analysis
+### Phase 2 — morphology & analysis {#phase-2-morphology-analysis}
 
 - **Grayscale morphology (DONE)** — `Erode`/`Dilate` (separable per-channel
   local min/max over a square element, matching `scipy.ndimage.grey_erosion`/
@@ -125,9 +130,9 @@ shape that maps onto vector registers.
 - Connected components, labelling, region properties.
 - Histograms (`kernels.Histogram` exists) and histogram equalisation.
 
-### Performance
+### Performance {#performance}
 
-The [Performance](performance.md) page tracks honest
+The [Performance]({{< relref "performance.md" >}}) page tracks honest
 go-images-vs-scikit-image / SciPy / OpenCV benchmarks. go-images beats
 scikit-image on the separable hot ops (box blur 1.8–2.6×, RGB→HSV ~4.8×, flip
 ~2×, Gaussian now 1.0–1.3×). **Morphology now reaches scikit-image parity**
@@ -139,20 +144,20 @@ factor (small-radius morphology, and the non-per-pixel Rotate90/Crop/Otsu
 reference ops); closing it (and matching OpenCV's O(1)+SIMD morphology) is the
 SIMD work tracked in BENCHMARKS.md.
 
-### Phase 3 — SIMD kernels via go-asmgen
+### Phase 3 — SIMD kernels via go-asmgen {#phase-3-simd-kernels-via-go-asmgen}
 
 - Replace `internal/kernels` scalar loops with SIMD across all six 64-bit Go
   targets, keeping the scalar versions as the fallback and the correctness
   oracle (differential tests: SIMD output must equal scalar output).
 - Benchmark suite to measure the speed-up and track against libvips/ImageMagick.
 
-### Phase 4 — Ruby binding
+### Phase 4 — Ruby binding {#phase-4-ruby-binding}
 
 - Expose the library through
   [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby) as a cgo-free
   alternative to ruby-vips/RMagick.
 
-## 4. Quality bar (org rules)
+## 4. Quality bar (org rules) {#4-quality-bar-org-rules}
 
 - Pure Go, **CGO=0**, no vendoring — build from source on every target.
 - **100% statement coverage**, enforced in CI; the test runner exit code must

@@ -1,4 +1,9 @@
-# Modules
+---
+title: "Modules"
+weight: 20
+---
+
+# Modules {#modules}
 
 The **7 modules** of `go-images`. Each links to its source and to its generated
 API reference.
@@ -13,7 +18,7 @@ API reference.
 | [`gif`](https://github.com/go-images/gif) | a fork of Go's `image/gif`, with the same `DecodePartial` as `png` | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/gif) |
 | [`jpeg2000`](https://github.com/go-images/jpeg2000) | a pure-Go JPEG 2000 codec, forked from ajroetker/go-jpeg2000: CMYK read as ink, tiled encodes fixed | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/jpeg2000) |
 
-## jpeg2000: a fork kept for its fixes
+## jpeg2000: a fork kept for its fixes {#jpeg2000-a-fork-kept-for-its-fixes}
 
 `jpeg2000` decodes and encodes JPEG 2000 codestreams (`.j2k`) and JP2 files
 (`.jp2`) with no C. It is a fork of
@@ -42,7 +47,7 @@ modules required it through them.
     allocations to 269 ms and 93 thousand, the same count as arm64, where the
     decode is not slower (−1.5 %).
 
-## ⛔ Why three forks of Go's own codecs
+## ⛔ Why three forks of Go's own codecs {#why-three-forks-of-gos-own-codecs}
 
 Not to change what they decode. Each carries its difference in a `NOTICE`, and
 Go's own test suite passes unaltered in substance.
@@ -57,7 +62,7 @@ reading between the samples, the way libjpeg does, rather than by repeating
 each one. That is what made CMYK scans come back softer here than everywhere
 else.
 
-## ⛔ Why a reader registers itself
+## ⛔ Why a reader registers itself {#why-a-reader-registers-itself}
 
 `psd` is imported for its **side effect**:
 

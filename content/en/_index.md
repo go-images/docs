@@ -1,4 +1,9 @@
-# go-images documentation
+---
+title: "Home"
+weight: 10
+---
+
+# go-images documentation {#go-images-documentation}
 
 **A pure-Go (no cgo) scikit-image-style image-processing library.** Filters,
 edge detectors, morphology, geometry and colour transforms over an RGBA raster —
@@ -26,7 +31,7 @@ if err := img.Save("edges.png", edges); err != nil {
 }
 ```
 
-## API surface
+## API surface {#api-surface}
 
 | Area | Functions |
 | --- | --- |
@@ -37,7 +42,7 @@ if err := img.Save("edges.png", edges); err != nil {
 | Geometry | `Resize`, `Rotate90`/`180`/`270`, `Crop`, `FlipHorizontal`, `FlipVertical` |
 | Colour | `Grayscale`, `Invert`, `RGBToHSV`, `HSVToRGB`, `OtsuThreshold`, `Threshold`, `AdjustBrightness`, `AdjustContrast` |
 
-## Performance & architectures
+## Performance & architectures {#performance-architectures}
 
 The separable hot operations are go-asmgen SIMD-accelerated on amd64 (SSE2),
 arm64 (NEON) and s390x (vector); all six 64-bit targets run a portable scalar
@@ -46,13 +51,13 @@ to 10.3× on all cores) and now matches or beats it on Sobel (1.02–1.06×
 single-thread, up to 4.8× on all cores); the benchmark page is honest about
 where it does not.
 
-## Where to go next
+## Where to go next {#where-to-go-next}
 
-- [Modules](modules.md) — the seven modules of this organisation: the library,
+- [Modules]({{< relref "modules.md" >}}) — the seven modules of this organisation: the library,
   `depth`, the Photoshop reader, the three forks of Go's own codecs, and the
   JPEG 2000 codec.
-- [Roadmap](roadmap.md) — the plan and what ships today.
-- [Performance](performance.md) — honest benchmarks versus scikit-image.
+- [Roadmap]({{< relref "roadmap.md" >}}) — the plan and what ships today.
+- [Performance]({{< relref "performance.md" >}}) — honest benchmarks versus scikit-image.
 
 Source: [github.com/go-images/images](https://github.com/go-images/images) ·
 also the cgo-free image processor behind [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby)'s
