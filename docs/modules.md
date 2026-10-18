@@ -1,6 +1,6 @@
 # Modules
 
-The **6 modules** of `go-images`. Each links to its source and to its generated
+The **7 modules** of `go-images`. Each links to its source and to its generated
 API reference.
 
 | Module | What it is | Reference |
@@ -11,6 +11,31 @@ API reference.
 | [`png`](https://github.com/go-images/png) | a fork of Go's `image/png` whose `DecodePartial` says what a truncated stream did decode | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/png) |
 | [`jpeg`](https://github.com/go-images/jpeg) | a fork of Go's `image/jpeg` that upsamples a four-component JPEG's chroma the way libjpeg does | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/jpeg) |
 | [`gif`](https://github.com/go-images/gif) | a fork of Go's `image/gif`, with the same `DecodePartial` as `png` | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/gif) |
+| [`jpeg2000`](https://github.com/go-images/jpeg2000) | a pure-Go JPEG 2000 codec, forked from ajroetker/go-jpeg2000: CMYK read as ink, tiled encodes fixed | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/jpeg2000) |
+
+## jpeg2000: a fork kept for its fixes
+
+`jpeg2000` decodes and encodes JPEG 2000 codestreams (`.j2k`) and JP2 files
+(`.jp2`) with no C. It is a fork of
+[ajroetker/go-jpeg2000](https://github.com/ajroetker/go-jpeg2000), and every
+change is listed in its `NOTICE`, as Apache-2.0 requires. go-pdfkit/render
+and go-gfx/gfx require it directly, and on 2026-10-18 another 45 fleet
+modules required it through them.
+
+- A four-component file whose JP2 header declares **CMYK** decodes to an
+  `*image.CMYK`. Read as red, green and blue it lost the black plate: 255
+  levels from poppler on every pixel, now at most 2 over 2 440 044 samples.
+- Tiled encodes place their code blocks and tiles where the decoder and
+  OpenJPEG read them (ITU-T T.800 B.7), and a tile whose blocks all quantise
+  away is accepted as the reference accepts it.
+- The SIMD dependency is [go-simd/highway](https://go-simd.github.io/docs/latest/repos/highway/),
+  because consumers cannot `go mod tidy` against upstream go-highway's releases.
+- ⛔ The lossless colour transform is **not** a SIMD call. On amd64, without
+  `GOEXPERIMENT=simd`, highway takes a generic fallback that allocates in every
+  vector operation. On one 4K frame that took 408.8 ms and 12.45 million
+  allocations, against 17.9 ms and 6 for a plain loop. On arm64 the loop also
+  beat the NEON path, 14.1 ms against 29.9 ms, because copying the planes in
+  and out cost more than the kernel saved.
 
 ## ⛔ Why three forks of Go's own codecs
 
