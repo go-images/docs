@@ -1,0 +1,9 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="go-images">
+  <defs><linearGradient id="imggrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FB923C"/><stop offset="1" stop-color="#C2410C"/></linearGradient></defs>
+  <rect width="256" height="256" rx="56" fill="url(#imggrad)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="54" y="66" width="148" height="124" rx="18"/>
+    <circle cx="92" cy="104" r="13"/>
+    <path d="M62 178 104 132 132 156 166 116 194 178"/>
+  </g>
+</svg>
