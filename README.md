@@ -6,9 +6,9 @@ and served at <https://go-images.github.io/docs/>.
 
 ## Local preview
 
-```sh
-pip install -r requirements.txt
-mkdocs serve
+```bash
+git submodule update --init --recursive   # themes/hextra, pinned at a release tag
+hugo server                               # http://localhost:1313
 ```
 
 Pushing to `main` deploys the `latest` version to the `gh-pages` branch via
