@@ -48,6 +48,8 @@ where it does not.
 
 ## Where to go next
 
+- [Modules](modules.md) — the six modules of this organisation: the library,
+  `depth`, the Photoshop reader, and the three forks of Go's own codecs.
 - [Roadmap](roadmap.md) — the plan and what ships today.
 - [Performance](performance.md) — honest benchmarks versus scikit-image.
 
