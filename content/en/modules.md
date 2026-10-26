@@ -10,13 +10,39 @@ API reference.
 
 | Module | What it is | Reference |
 | --- | --- | --- |
-| [`images`](https://github.com/go-images/images) | the library: filters, edges, morphology, geometry and colour over an RGBA raster, with go-asmgen SIMD kernels | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/images) |
+| [`images`](https://github.com/go-images/images) | the library: filters, edges, morphology, geometry and colour over an RGBA raster, with go-asmgen SIMD kernels; the pixel operations also live in the codec-free [`images/ops`](#images-ops-pixels-without-codecs) | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/images) |
 | [`depth`](https://github.com/go-images/depth) | one picture in, two eyes out: depth from cues in the picture itself, and both eyes synthesised | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/depth) |
 | [`psd`](https://github.com/go-images/psd) | Photoshop `.psd`/`.psb`, the flattened composite, for `image.Decode` | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/psd) |
 | [`png`](https://github.com/go-images/png) | a fork of Go's `image/png` whose `DecodePartial` says what a truncated stream did decode | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/png) |
 | [`jpeg`](https://github.com/go-images/jpeg) | a fork of Go's `image/jpeg` that upsamples a four-component JPEG's chroma the way libjpeg does | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/jpeg) |
 | [`gif`](https://github.com/go-images/gif) | a fork of Go's `image/gif`, with the same `DecodePartial` as `png` | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/gif) |
 | [`jpeg2000`](https://github.com/go-images/jpeg2000) | a pure-Go JPEG 2000 codec, forked from ajroetker/go-jpeg2000: CMYK read as ink, tiled encodes fixed | [pkg.go.dev](https://pkg.go.dev/github.com/go-images/jpeg2000) |
+
+## images/ops: pixels without codecs {#images-ops-pixels-without-codecs}
+
+⛔ **Status: on main, in the next release.** It is merged but not yet tagged,
+so `go get` at the latest tag does not have it.
+
+`github.com/go-images/images/ops` is a subpackage of `images` that holds every
+pixel operation: filters, edges, morphology, geometry and colour. The root
+package `images` forwards each name under the same name, so existing code keeps
+compiling, and keeps the I/O: `Load`, `Save`, `Decode`, `Encode`,
+`DecodePartial` and EXIF.
+
+The reason is the link, not the API. Decoders register themselves in `init`, so
+importing `images` links **every decoder**, about 1.7 MB of WebAssembly code,
+whether the program reads a file or not. `ops` imports no codec.
+
+```go
+import "github.com/go-images/images/ops" // pixels only: no decoder is linked
+
+blurred, err := ops.GaussianBlur(src, 3)
+```
+
+A program that only processes pixels it already holds should import `ops`. A
+program that reads or writes files imports `images`, as before. The widget
+toolkit moved its `Material` and `Thumbnail` to `ops` for this reason; see
+[Binary size](https://go-widgets.github.io/docs/latest/rendering/toolkit/#binary-size).
 
 ## jpeg2000: a fork kept for its fixes {#jpeg2000-a-fork-kept-for-its-fixes}
 
