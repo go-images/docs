@@ -25,11 +25,38 @@ theme: hextra
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: false
 
+# Flags: lipis/flag-icons 4x3 (MIT, static/images/flags/LICENSE).
 languages:
   en:
     label: "English"
     contentDir: content/en
     weight: 1
+    params:
+      flag: images/flags/gb.svg
+  zh-cn:
+    label: "简体中文"
+    contentDir: content/zh-cn
+    weight: 2
+    params:
+      flag: images/flags/cn.svg
+      description: "纯 Go（CGO=0）编写的 scikit-image 风格图像处理库：滤波、边缘、形态学、几何、色彩，并带 SIMD 加速。"
+  ko:
+    label: "한국어"
+    contentDir: content/ko
+    weight: 3
+    params:
+      flag: images/flags/kr.svg
+      description: "순수 Go(CGO=0)로 작성한 scikit-image 스타일의 이미지 처리 라이브러리: 필터, 에지, 형태학, 기하, 색상. SIMD 가속."
+  ja:
+    label: "日本語"
+    contentDir: content/ja
+    weight: 4
+    params:
+      flag: images/flags/jp.svg
+      description: "純粋な Go（CGO=0）で書かれた scikit-image 風の画像処理ライブラリ：フィルタ、エッジ、モルフォロジー、幾何、色。SIMD で高速化。"
+
+# Word counts and summaries of the CJK pages count characters, not spaces.
+hasCJKLanguage: true
 
 enableRobotsTXT: true
 # Git history dates every page: "Last updated on" at the foot of each one.
@@ -39,6 +66,15 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+    extensions:
+      # ⛔ CJK line breaks: a soft line break between two East Asian characters
+      # must not become a space (Chinese, Japanese), while between Korean words
+      # it must (Korean is written with spaces). css3draft does both; "simple"
+      # glues Korean words together.
+      cjk:
+        enable: true
+        eastAsianLineBreaks: true
+        eastAsianLineBreaksStyle: css3draft
     parser:
       attribute:
         title: true
@@ -70,6 +106,10 @@ params:
   docs:
     version: "main"
   description: "A pure-Go (CGO=0) scikit-image-style image-processing library — filters, edges, morphology, geometry, colour; SIMD-accelerated."
+  # The language switch (foot of the sidebar) shows the translate icon, then
+  # the language's flag.
+  languageSwitch:
+    icon: translate
   navbar:
     displayTitle: true
     displayLogo: false
@@ -84,4 +124,4 @@ params:
     width: normal
   editURL:
     enable: true
-    base: "https://github.com/go-images/images/edit/main/content/en"
+    base: "https://github.com/go-images/docs/edit/main/content"
