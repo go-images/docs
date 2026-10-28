@@ -102,7 +102,23 @@ cascade:
     params:
       type: docs
 
+# The search box in the navbar (a site with no entry of type "search" has none).
+menu:
+  main:
+    - name: Search
+      weight: 1
+      params:
+        type: search
+
 params:
+  # FlexSearch over the page contents. Chinese, Japanese and Korean text is
+  # indexed as pairs of characters (hextra v0.23.0, flexsearch.cjk).
+  search:
+    enable: true
+    type: flexsearch
+    flexsearch:
+      index: content
+      tokenize: forward
   docs:
     version: "main"
   description: "A pure-Go (CGO=0) scikit-image-style image-processing library — filters, edges, morphology, geometry, colour; SIMD-accelerated."
