@@ -69,6 +69,11 @@ blurred, err := ops.GaussianBlur(src, 3)
     amd64 上 1920×1080 的无损解码从 638 ms 和 1455 万次内存分配降到
     269 ms 和 9.3 万次，与 arm64 的分配次数相同，而 arm64 上的
     解码并没有更慢（−1.5 %）。
+- ⛔ **自 v0.13.8 起做模糊测试。** 此前没有任何模糊测试目标，第一个目标
+  在几秒内就发现了三处 panic，全都能从 `DecodeConfig` 触发。其中一处只有
+  14 个字节，能让任何通过 go-pdfkit/render 渲染 PDF 的程序崩溃。现在头部
+  按 OpenJPEG 的方式校验，这三个输入保留为回归测试。`Decode` 仍然**没有
+  像素数上限**：请先调用 `DecodeConfig`，拒绝无法承受的图像。
 
 ## ⛔ 为什么要分叉 Go 自带的三个编解码器 {#why-three-forks-of-gos-own-codecs}
 
