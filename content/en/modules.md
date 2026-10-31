@@ -72,6 +72,12 @@ modules required it through them.
     a lossless 1920×1080 decode on amd64 went from 638 ms and 14.55 million
     allocations to 269 ms and 93 thousand, the same count as arm64, where the
     decode is not slower (−1.5 %).
+- ⛔ **Fuzzed since v0.13.8.** It had no fuzz target, and the first one found
+  three panics in seconds, all reachable from `DecodeConfig`. One was fourteen
+  bytes that crashed any program rendering a PDF through go-pdfkit/render.
+  The headers are now checked as OpenJPEG checks them, and the three inputs
+  are regression tests. `Decode` still has **no pixel limit**: call
+  `DecodeConfig` first and refuse a picture you cannot afford.
 
 ## ⛔ Why three forks of Go's own codecs {#why-three-forks-of-gos-own-codecs}
 
