@@ -33,6 +33,17 @@ blurred, err := ops.GaussianBlur(src, 3)
 
 이미 가지고 있는 픽셀만 처리하는 프로그램은 `ops`를 임포트해야 합니다. 파일을 읽거나 쓰는 프로그램은 이전처럼 `images`를 임포트합니다. 위젯 툴킷(widget toolkit)도 이러한 이유로 `Material`과 `Thumbnail`을 `ops`로 옮겼습니다. 자세한 내용은 [바이너리 크기](https://go-widgets.github.io/docs/latest/rendering/toolkit/#binary-size)를 참고하십시오.
 
+## images: 모든 디코드에 크기 제한 {#images-size-limit}
+
+이미지 파일은 자신의 크기를 스스로 선언하며, 압축 형식은 몇 바이트만으로 큰 크기를 선언할 수 있습니다. 헤더가 16000×16000을 선언하는 1×1 PNG는 표준 디코더가 픽셀을 하나도 읽기 전에 약 1 GB를 할당했습니다. `images` v0.3.0부터 모든 디코드는 헤더를 먼저 읽고 `DecodeOptions.MaxPixels`를 넘는 이미지를 거부합니다. **기본값은 40,000,000픽셀**(5천만 화소 사진은 이를 넘습니다)이며, go-gfx/gfx의 `codec.ErrTooLarge`를 감싼 오류를 돌려줍니다. 같은 공격 입력의 할당량은 이제 4.5 KB입니다.
+
+```go
+img, err := images.DecodeWith(r, images.DecodeOptions{MaxPixels: 120_000_000})
+if errors.Is(err, codec.ErrTooLarge) { /* refuse */ }
+```
+
+`Decode`, `DecodeBest`, `DecodePartial`, `Load`는 기본값을 쓰고, `DecodeWith`와 `DecodePartialWith`는 옵션을 받습니다.
+
 ## jpeg2000: 수정 사항 때문에 유지하는 포크 {#jpeg2000-a-fork-kept-for-its-fixes}
 
 `jpeg2000`은 C 없이 JPEG 2000 코드스트림(`.j2k`)과 JP2 파일(`.jp2`)을 디코딩하고 인코딩합니다. [ajroetker/go-jpeg2000](https://github.com/ajroetker/go-jpeg2000)의 포크이며, Apache-2.0이 요구하는 대로 모든 변경 사항이 `NOTICE`에 나열되어 있습니다. go-pdfkit/render와 go-gfx/gfx가 이를 직접 요구하며, 2026-10-18에는 이들을 거쳐 다른 플릿(fleet) 모듈 45개가 이를 요구했습니다.

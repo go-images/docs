@@ -42,6 +42,17 @@ blurred, err := ops.GaussianBlur(src, 3)
 程序则像以前一样导入 `images`。控件工具包（widget toolkit）出于这个原因把它的 `Material` 和 `Thumbnail` 迁到了 `ops`，参见
 [二进制体积](https://go-widgets.github.io/docs/latest/rendering/toolkit/#binary-size)。
 
+## images：每次解码都有尺寸上限 {#images-size-limit}
+
+图像文件自己声明尺寸，压缩格式只用几个字节就能声明一个巨大的尺寸：头部声称 16000×16000 的 1×1 PNG，会让标准解码器在读取任何像素之前分配约 1 GB。自 `images` v0.3.0 起，每次解码都先读取头部，并拒绝超过 `DecodeOptions.MaxPixels` 的图像，**默认 40 000 000 像素**（5000 万像素的照片超过此值），返回包装了 go-gfx/gfx `codec.ErrTooLarge` 的错误。同一个恶意输入现在只分配 4.5 KB。
+
+```go
+img, err := images.DecodeWith(r, images.DecodeOptions{MaxPixels: 120_000_000})
+if errors.Is(err, codec.ErrTooLarge) { /* refuse */ }
+```
+
+`Decode`、`DecodeBest`、`DecodePartial` 和 `Load` 使用默认值；`DecodeWith` 与 `DecodePartialWith` 接受选项。
+
 ## jpeg2000：因修复而保留的分支 {#jpeg2000-a-fork-kept-for-its-fixes}
 
 `jpeg2000` 无需 C 即可解码和编码 JPEG 2000 码流（`.j2k`）和 JP2 文件
