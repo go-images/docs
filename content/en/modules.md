@@ -44,6 +44,23 @@ program that reads or writes files imports `images`, as before. The widget
 toolkit moved its `Material` and `Thumbnail` to `ops` for this reason; see
 [Binary size](https://go-widgets.github.io/docs/latest/rendering/toolkit/#binary-size).
 
+## images: a size limit on every decode {#images-size-limit}
+
+An image file states its own size, and a compressed format states a large one in
+a few bytes: a 1×1 PNG whose header claims 16000×16000 made the standard decoder
+allocate about 1 GB before reading a pixel. Since `images` v0.3.0 every decode
+reads the header first and refuses an image above `DecodeOptions.MaxPixels`,
+**default 40 000 000 pixels** (a 50-megapixel photo is above it), with an error
+wrapping `codec.ErrTooLarge` from go-gfx/gfx. The same bomb now allocates 4.5 KB.
+
+```go
+img, err := images.DecodeWith(r, images.DecodeOptions{MaxPixels: 120_000_000})
+if errors.Is(err, codec.ErrTooLarge) { /* refuse */ }
+```
+
+`Decode`, `DecodeBest`, `DecodePartial` and `Load` apply the default;
+`DecodeWith` and `DecodePartialWith` take the options.
+
 ## jpeg2000: a fork kept for its fixes {#jpeg2000-a-fork-kept-for-its-fixes}
 
 `jpeg2000` decodes and encodes JPEG 2000 codestreams (`.j2k`) and JP2 files

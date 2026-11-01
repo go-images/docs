@@ -33,6 +33,17 @@ blurred, err := ops.GaussianBlur(src, 3)
 
 すでに保持しているピクセルを処理するだけのプログラムは、`ops` をインポートしてください。ファイルを読み書きするプログラムは、これまでどおり `images` をインポートします。ウィジェットツールキットは、この理由から `Material` と `Thumbnail` を `ops` へ移しました。詳しくは[バイナリサイズ](https://go-widgets.github.io/docs/latest/rendering/toolkit/#binary-size)を参照してください。
 
+## images: すべてのデコードにサイズ上限 {#images-size-limit}
+
+画像ファイルは自分のサイズを自分で申告し、圧縮形式ではわずかなバイト数で巨大なサイズを申告できます。ヘッダーが 16000×16000 を申告する 1×1 の PNG は、標準のデコーダがピクセルを 1 つも読む前に約 1 GB を確保していました。`images` v0.3.0 以降、すべてのデコードは先にヘッダーを読み、`DecodeOptions.MaxPixels` を超える画像を拒否します。**既定は 40,000,000 ピクセル**（5000 万画素の写真はこれを超えます）で、go-gfx/gfx の `codec.ErrTooLarge` を包んだエラーを返します。同じ攻撃入力の確保量は 4.5 KB になりました。
+
+```go
+img, err := images.DecodeWith(r, images.DecodeOptions{MaxPixels: 120_000_000})
+if errors.Is(err, codec.ErrTooLarge) { /* refuse */ }
+```
+
+`Decode`、`DecodeBest`、`DecodePartial`、`Load` は既定値を使い、`DecodeWith` と `DecodePartialWith` はオプションを受け取ります。
+
 ## jpeg2000: 修正のために維持しているフォーク {#jpeg2000-a-fork-kept-for-its-fixes}
 
 `jpeg2000` は、JPEG 2000 のコードストリーム（`.j2k`）と JP2 ファイル（`.jp2`）を、C を使わずにデコード・エンコードします。[ajroetker/go-jpeg2000](https://github.com/ajroetker/go-jpeg2000) のフォークで、Apache-2.0 の要件に従い、すべての変更を `NOTICE` に記載しています。go-pdfkit/render と go-gfx/gfx は直接これを require しており、2026-10-18 には、さらに 45 のフリートモジュールがそれらを経由して require していました。
